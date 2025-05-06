@@ -1,0 +1,62 @@
+// Function to toggle the dropdown menu
+function toggleDropdown() {
+    const menu = document.querySelector(".dropdown-menu");
+    if (menu) {
+        menu.classList.toggle("open");
+        console.log("Dropdown toggled!");
+    } else {
+        console.error("Dropdown menu not found!");
+    }
+}
+
+// Add event listeners
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript Loaded!");
+
+    // Dropdown menu toggle
+    const dropdownToggle = document.querySelector(".dropdown-toggle");
+    if (dropdownToggle) {
+        dropdownToggle.addEventListener("click", toggleDropdown);
+    } else {
+        console.error("Dropdown toggle button not found!");
+    }
+
+    // Close menu when a link is clicked
+    const dropdownLinks = document.querySelectorAll(".dropdown-menu a");
+    dropdownLinks.forEach(link => {
+        link.addEventListener("click", function () {
+            toggleDropdown(); // Reuse toggle function to close the menu
+        });
+    });
+
+    // Typing effect for "Hello, I'm Krish Patel"
+    const text = "Hello, I'm Krish Patel";
+    const colors = ["#ff5733", "#33ff57", "#3357ff", "#ff33a6", "#a633ff"];
+    let index = 0;
+    let colorIndex = 0;
+    let speed = 150;
+
+    const textElement = document.getElementById("typing-text");
+    if (!textElement) {
+        console.error("Element #typing-text not found!");
+        return;
+    }
+
+    function typeEffect() {
+        if (index < text.length) {
+            textElement.innerHTML += text.charAt(index);
+            textElement.style.color = colors[colorIndex];
+            index++;
+            colorIndex = (colorIndex + 1) % colors.length;
+            setTimeout(typeEffect, speed);
+        } else {
+            setTimeout(() => {
+                textElement.innerHTML = "";
+                index = 0;
+                typeEffect();
+            }, 2000);
+        }
+    }
+
+    typeEffect();
+});

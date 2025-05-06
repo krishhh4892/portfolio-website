@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Experience Showcase">
+    <title>Experience Showcase</title>
+    <style>
+        :root {
+            --white: #ffffff;
+            --dark-grey: #333333;
+            --mid-grey: #555555;
+            --light-grey: #e0e0e0;
+            --accent: #2c3e50;
+            --highlight: #56778d;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--dark-grey);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--light-grey);
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ff00ff, #ffcc00, #00ffcc, #ff00ff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: colorShift 5s infinite alternate;
+        }
+
+        header p {
+            color: var(--mid-grey);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        #typing-text {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: normal;
+            overflow: hidden;
+            border-right: 2px solid var(--dark-grey);
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .experience-section {
+            margin: 4rem 0;
+        }
+
+        .experience-section h2 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .experience-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 2px;
+            background: var(--highlight);
+        }
+
+        .experience-timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid var(--light-grey);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-left: 3px solid var(--highlight);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: var(--transition);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 1.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--highlight);
+            border-radius: 50%;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.4rem;
+            color: var(--dark-grey);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item .role {
+            font-size: 1rem;
+            color: var(--mid-grey);
+            font-style: italic;
+        }
+
+        .timeline-item .date {
+            font-size: 0.9rem;
+            color: var(--mid-grey);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+        }
+
+        .timeline-item li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--dark-grey);
+        }
+
+        .timeline-item li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--highlight);
+            font-size: 1.2rem;
+        }
+
+        .tech-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-icons img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .skills-section {
+            margin: 4rem 0;
+        }
+
+        .skills-section h2 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 1px solid var(--light-grey);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-card h3 {
+            font-size: 1.2rem;
+            color: var(--dark-grey);
+            margin-bottom: 1rem;
+        }
+
+        .skill-bar {
+            background: var(--light-grey);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            background: var(--highlight);
+            height: 100%;
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--mid-grey);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--light-grey);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .footer-line {
+            width: 100%;
+            height: 5px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, #ff00ff, #ffcc00, #00ffcc, #ff00ff);
+            background-size: 300% 100%;
+            animation: colorShift 5s infinite alternate;
+        }
+
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 2rem 0;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 0.95rem;
+                padding: 0 1rem;
+            }
+
+            #typing-text {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            #typing-text {
+                font-size: 0.8rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Professional Experience</h1>
+            <p><span id="typing-text"></span></p>
+        </header>
+
+        <section class="experience-section">
+            <h2>Work Experience</h2>
+            <div class="experience-timeline">
+                <div class="timeline-item">
+                    <h3>Software Developer Intern</h3>
+                    <p class="role">Sys Creations, Burlington</p>
+                    <p class="date">May 2024 – Aug 2024</p>
+                    <ul>
+                        <li>Architected and deployed scalable cloud solutions using AWS, Azure, and Docker, achieving a 30% improvement in system performance.</li>
+                        <li>Developed AI-driven automation tools with Python and TensorFlow, reducing manual intervention by 40%.</li>
+                        <li>Collaborated in a cross-functional team using Git and JIRA, delivering projects 15% ahead of schedule.</li>
+                    </ul>
+                    <div class="tech-icons">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/amazonaws.svg" alt="AWS" title="AWS">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/microsoftazure.svg" alt="Azure" title="Azure">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/docker.svg" alt="Docker" title="Docker">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/python.svg" alt="Python" title="Python">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/tensorflow.svg" alt="TensorFlow" title="TensorFlow">
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <h3>Data Analyst Intern</h3>
+                    <p class="role">Sys Creations, Burlington</p>
+                    <p class="date">May 2023 – Aug 2023</p>
+                    <ul>
+                        <li>Analyzed large datasets with SQL and Python, uncovering insights that boosted operational efficiency by 20%.</li>
+                        <li>Automated data pipelines using AWS S3 and Lambda, cutting processing time by 50%.</li>
+                        <li>Designed interactive dashboards in Power BI and Tableau, enabling real-time decision-making for stakeholders.</li>
+                    </ul>
+                    <div class="tech-icons">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/amazonaws.svg" alt="AWS" title="AWS">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/python.svg" alt="Python" title="Python">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/microsoftpowerbi.svg" alt="Power BI" title="Power BI">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v5/icons/tableau.svg" alt="Tableau" title="Tableau">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="skills-section">
+            <h2>Skills Proficiency</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Cloud Computing (AWS, Azure, GCP)</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>AI & Machine Learning</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Data Analysis</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Python Programming</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="95%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>SQL and Database Management</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="95%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Data Visualization (Tableau, Power BI, Looker)</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Software Engineering Practices (Git, CI/CD)</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="75%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Big Data Technologies (Hadoop, Spark)</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="95%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Statistical Analysis and Mathematics</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Deep Learning and Neural Networks</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Apache Airflow</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>API Development and Integration</h3>
+                    <div class="skill-bar">
+                        <div class="skill-bar-fill" data-width="70%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 | Designed for professional excellence</p>
+        <div class="footer-line"></div>
+    </footer>
+
+    <script>
+        // Typing Effect
+        const phrase = "A showcase of my journey in software development and data analysis";
+        const typingText = document.getElementById("typing-text");
+        let i = 0;
+
+        function typeWriter() {
+            if (i < phrase.length) {
+                typingText.textContent += phrase.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            } else {
+                setTimeout(() => {
+                    typingText.style.borderRight = "none";
+                }, 1000);
+            }
+        }
+
+        window.onload = () => {
+            typeWriter();
+        };
+
+        // Timeline animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+
+        // Skill bars animation
+        document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 100);
+        });
+    </script>
+</body>
+</html>
