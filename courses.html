@@ -3,364 +3,530 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Courses Taken</title>
+  <title>Courses Taken - Krish Patel</title>
   <style>
-    /* General page styles */
-    body {
-      font-family: 'Arial', sans-serif;
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+    :root {
+      --text-primary: #000000;
+      --text-secondary: rgb(85, 85, 85);
+      --bg-primary: #ffffff;
+      --bg-secondary: rgb(250, 250, 250);
+      --border-dark: rgb(53, 53, 53);
+      --border-light: rgb(163, 163, 163);
+      --hover-dark: rgb(0, 0, 0);
+      --hover-grey: grey;
+      --link-blue: #2980B9;
+      --link-yellow: #F1C40F;
+    }
+
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f7f7f7;
-      color: #333;
-      line-height: 1.6;
+      box-sizing: border-box;
     }
 
-    /* Header styles */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a, .btn {
+      transition: all 300ms ease;
+    }
+
     header {
-      background-color: #2C3E50;
-      color: white;
+      height: 20vh;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 0.1rem solid var(--border-light);
+      flex-shrink: 0;
+    }
+
+    #typing-text {
+      font-size: 2.5rem;
+      font-weight: 600;
       text-align: center;
-      padding: 30px 0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      white-space: normal;
+      overflow: hidden;
+      border-right: 3px solid var(--text-primary);
+      animation: blink 0.75s step-end infinite;
+      background: linear-gradient(90deg, #ff00ff, #ffcc00, #00ffcc, #ff00ff);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: colorShift 5s infinite alternate, blink 0.75s step-end infinite;
+      line-height: 1.2;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5em;
+    .filter-container {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 0.1rem solid var(--border-light);
+      flex-shrink: 0;
+      display: flex; /* Use Flexbox */
+      flex-wrap: wrap; /* Allow buttons to wrap */
+      justify-content: center; /* Center buttons horizontally */
+      gap: 0.5rem; /* Consistent spacing between buttons */
     }
 
-    /* Main content styles */
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: 0.1rem solid var(--border-dark);
+      border-radius: 2rem;
+      background: none;
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 300ms ease;
+      white-space: nowrap; /* Prevent text from wrapping within buttons */
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--border-dark);
+      color: white;
+    }
+
     main {
-      padding: 40px 20px;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 1rem 2rem;
+      flex-grow: 1;
     }
 
-    section {
-      margin-bottom: 30px;
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1rem 0;
     }
 
-    h2 {
-      font-size: 1.8em;
-      color: #2980B9;
-      border-bottom: 3px solid #2980B9;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+    .course-item {
+      background: var(--bg-secondary);
+      border-radius: 2rem;
+      padding: 1rem;
+      border: 0.1rem solid var(--border-light);
+      transition: all 300ms ease;
+      position: relative;
+      opacity: 0;
     }
 
-    ul {
-      list-style-type: none;
-      padding: 0;
+    .course-item.visible {
+      opacity: 1;
+      animation: fadeInUp 0.5s ease forwards;
     }
 
-    ul li {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin-bottom: 15px;
-      padding: 15px;
-      transition: all 0.3s ease;
+    .course-item:hover {
+      background: var(--bg-primary);
+      border-color: var(--border-dark);
     }
 
-    ul li:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    .course-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
     }
 
-    ul li b {
-      color: #34495E;
+    .course-info {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
     }
 
-    ul li .course-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1em;
-      margin-top: 10px;
-    }
-
-    ul li .course-info span {
-      color: #7F8C8D;
-    }
-
-    /* Back to portfolio button styles */
     footer {
+      background: var(--bg-primary);
+      padding: 1rem;
       text-align: center;
-      padding: 20px;
-      background-color: #ecf0f1;
-      margin-top: 30px;
+      position: relative;
+      flex-shrink: 0;
     }
 
     footer a {
+      color: var(--text-primary);
       text-decoration: none;
-      color: #2980B9;
-      font-size: 1.2em;
-      padding: 10px 20px;
-      border: 2px solid #2980B9;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
+      padding: 0.5rem 1rem;
+      border: 0.1rem solid var(--border-dark);
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 300ms ease;
     }
 
     footer a:hover {
-      background-color: #2980B9;
+      background: var(--hover-dark);
       color: white;
+      text-decoration: underline;
+      text-decoration-color: rgb(181, 181, 181);
+      text-underline-offset: 1rem;
     }
-  </style>
+
+    .footer-line {
+      width: 100%;
+      height: 5px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, #ff00ff, #ffcc00, #00ffcc, #ff00ff);
+      background-size: 300% 100%;
+      animation: colorShift 5s infinite alternate;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes colorShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* Enhanced Responsiveness */
+    @media (max-width: 1200px) {
+      main { padding: 1rem 1.5rem; }
+      .course-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    }
+
+    @media (max-width: 1024px) {
+      main { padding: 1rem; }
+      #typing-text { font-size: 2rem; }
+      .course-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    }
+
+    @media (max-width: 768px) {
+      header { height: 15vh; }
+      #typing-text { font-size: 1.75rem; }
+      .filter-container { 
+        padding: 0.75rem; 
+        gap: 0.4rem; /* Reduce gap for smaller screens */
+      }
+      .filter-btn { 
+        padding: 0.4rem 0.8rem; 
+        font-size: 0.9rem; 
+      }
+      .course-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+      main { padding: 0.75rem; }
+      .course-title { font-size: 1.1rem; }
+      .course-info { font-size: 0.85rem; }
+    }
+
+    @media (max-width: 480px) {
+      header { height: 12vh; }
+      #typing-text { font-size: 1.25rem; white-space: normal; }
+      .filter-container { 
+        padding: 0.5rem; 
+        gap: 0.3rem; /* Further reduce gap */
+      }
+      .filter-btn { 
+        padding: 0.3rem 0.6rem; 
+        font-size: 0.8rem; 
+      }
+      main { padding: 0.5rem; }
+      .course-grid { gap: 0.5rem; }
+      .course-item { padding: 0.75rem; }
+      .course-title { font-size: 1rem; }
+      .course-info { font-size: 0.75rem; }
+      footer { padding: 0.75rem; }
+      footer a { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+    }
+
+    @media (max-width: 360px) {
+      header { height: 10vh; }
+      #typing-text { font-size: 1rem; }
+      .filter-container { 
+        padding: 0.5rem; 
+        gap: 0.2rem; /* Minimal gap for very small screens */
+      }
+      .filter-btn { 
+        padding: 0.25rem 0.5rem; 
+        font-size: 0.7rem; 
+      }
+      .course-title { font-size: 0.9rem; }
+      .course-info { font-size: 0.7rem; }
+      footer a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
+    }
+</style>
 </head>
 <body>
-
   <header>
-    <h1>Courses Taken</h1>
+    <div id="typing-text"></div>
   </header>
 
+  <div class="filter-container">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="cps">Computer Science</button>
+    <button class="filter-btn" data-filter="math">Math & Science</button>
+    <button class="filter-btn" data-filter="business">Business & Economics</button>
+    <button class="filter-btn" data-filter="comm">Communication</button>
+    <button class="filter-btn" data-filter="others">Others</button>
+  </div>
+
   <main>
-    <!-- Group by department -->
-    <section>
-      <h2>Communication</h2>
-      <ul>
-        <li>
-          <b>CMN 288:</b> Communication and Social Media
-          <div class="course-info">
-            <span>Winter 2025</span>
-            <span>In Progress</span>
-          </div>
-        </li>
-        <li>
-          <b>CMN 300:</b> Communication in the Computer Industry
-          <div class="course-info">
-            <span>Fall 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-      </ul>
-    </section>
+  <div class="course-grid">
+    <!-- Computer Science (CPS) -->
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 721: Artificial Intelligence I</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 803: Machine Learning</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 844: Data Mining</div>
+      <div class="course-info">Winter 2025</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 510: Database Systems I</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 843: Intro to Computer Vision</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 521: Introduction to Data Science</div>
+      <div class="course-info">Winter 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 706: Computer Networks I</div>
+      <div class="course-info">Winter 2025</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 590: Operating Systems I</div>
+      <div class="course-info">Winter 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 305: Data Structures</div>
+      <div class="course-info">Fall 2023</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 616: Algorithms</div>
+      <div class="course-info">Winter 2024</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 633: Computer Security</div>
+      <div class="course-info">Fall 2023</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 406: Intro to Software Engineering</div>
+      <div class="course-info">Winter 2023</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 420: Discrete Structures</div>
+      <div class="course-info">Winter 2023</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 506: Comparative Programming Languages</div>
+      <div class="course-info">Winter 2023</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 109: Computer Science I</div>
+      <div class="course-info">Winter 2022</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 209: Computer Science II</div>
+      <div class="course-info">Spring/Summer 2022</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 213: Computer Organization I</div>
+      <div class="course-info">Winter 2022</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 310: Computer Organization II</div>
+      <div class="course-info">Spring/Summer 2022</div>
+    </div>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 393: Introduction to C and UNIX</div>
+      <div class="course-info">Fall 2022</div>
+    </div>
 
-    <section>
-      <h2>Computer Science (CPS)</h2>
-      <ul>
-        <li>
-          <b>CPS 706:</b> Computer Networks I
-          <div class="course-info">
-            <span>Winter 2025</span>
-            <span>In Progress</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 844:</b> Data Mining
-          <div class="course-info">
-            <span>Winter 2025</span>
-            <span>In Progress</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 510:</b> Database Systems I
-          <div class="course-info">
-            <span>Fall 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 530:</b> Web Systems Development
-          <div class="course-info">
-            <span>Fall 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 721:</b> Artificial Intelligence I
-          <div class="course-info">
-            <span>Fall 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 803:</b> Machine Learning
-          <div class="course-info">
-            <span>Fall 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 843:</b> Intro to Computer Vision
-          <div class="course-info">
-            <span>Fall 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 521:</b> Introduction to Data Science
-          <div class="course-info">
-            <span>Winter 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 590:</b> Operating Systems I
-          <div class="course-info">
-            <span>Winter 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 616:</b> Algorithms
-          <div class="course-info">
-            <span>Winter 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 305:</b> Data Structures
-          <div class="course-info">
-            <span>Fall 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 633:</b> Computer Security
-          <div class="course-info">
-            <span>Fall 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 406:</b> Intro to Software Engineering
-          <div class="course-info">
-            <span>Winter 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 420:</b> Discrete Structures
-          <div class="course-info">
-            <span>Winter 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 506:</b> Comparative Programming Languages
-          <div class="course-info">
-            <span>Winter 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 209:</b> Computer Science II
-          <div class="course-info">
-            <span>Spring/Summer 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 310:</b> Computer Organization II
-          <div class="course-info">
-            <span>Spring/Summer 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPS 412:</b> Soc Issues, Ethics and Prof.
-          <div class="course-info">
-            <span>Winter 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 530: Web System Development</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
 
-    <section>
-      <h2>Mathematics and Science</h2>
-      <ul>
-        <li>
-          <b>MTH 108:</b> Linear Algebra
-          <div class="course-info">
-            <span>Fall 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>MTH 207:</b> Calculus and Computational Methods I
-          <div class="course-info">
-            <span>Spring/Summer 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CHY 103:</b> General Chemistry I
-          <div class="course-info">
-            <span>Winter 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <div class="course-item" data-category="cps">
+      <div class="course-title">CPS 412: Soc Issues, Ethics and Professionalism</div>
+      <div class="course-info">Winter 2022</div>
+    </div>
+ 
 
-    <section>
-      <h2>Additional Courses</h2>
-      <ul>
-        <li>
-          <b>CGEO 793:</b> The Geography of Toronto
-          <div class="course-info">
-            <span>Spring/Summer 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CPCS 581:</b> Advanced Topics in Astronomy
-          <div class="course-info">
-            <span>Spring/Summer 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CECN 104:</b> Introductory Microeconomics
-          <div class="course-info">
-            <span>Winter 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CENT 500:</b> New Venture Startup
-          <div class="course-info">
-            <span>Winter 2024</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CENT 526:</b> Entrepreneurial Behavior and Strategy
-          <div class="course-info">
-            <span>Fall 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CGEO 702:</b> Tech and Contemporary Environment
-          <div class="course-info">
-            <span>Fall 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>BSM 100:</b> New Business: Idea to Reality
-          <div class="course-info">
-            <span>Fall 2022</span>
-            <span>Completed</span>
-          </div>
-        </li>
-        <li>
-          <b>CMTH 380:</b> Probability and Statistics I
-          <div class="course-info">
-            <span>Winter 2023</span>
-            <span>Completed</span>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <!-- Mathematics and Science -->
+    <div class="course-item" data-category="math">
+      <div class="course-title">MTH 108: Linear Algebra</div>
+      <div class="course-info">Fall 2022</div>
+    </div>
+    <div class="course-item" data-category="math">
+      <div class="course-title">MTH 207: Calculus and Computational Methods I</div>
+      <div class="course-info">Spring/Summer 2022</div>
+    </div>
+    <div class="course-item" data-category="math">
+      <div class="course-title">CMTH 380: Probability and Statistics I</div>
+      <div class="course-info">Winter 2023</div>
+    </div>
+    <div class="course-item" data-category="math">
+      <div class="course-title">MTH 110: Discrete Mathematics I</div>
+      <div class="course-info">Winter 2022</div>
+    </div>
+    <div class="course-item" data-category="math">
+      <div class="course-title">CHY 103: General Chemistry I</div>
+      <div class="course-info">Winter 2022</div>
+    </div>
 
-  </main>
+    <!-- Business and Economics -->
+    <div class="course-item" data-category="business">
+      <div class="course-title">CECN 104: Introductory Microeconomics</div>
+      <div class="course-info">Winter 2024</div>
+    </div>
+    <div class="course-item" data-category="business">
+      <div class="course-title">CENT 500: New Venture Startup</div>
+      <div class="course-info">Winter 2024</div>
+    </div>
+    <div class="course-item" data-category="business">
+      <div class="course-title">CENT 526: Entrepreneurial Behavior and Strategy</div>
+      <div class="course-info">Fall 2023</div>
+    </div>
+    <div class="course-item" data-category="business">
+      <div class="course-title">BSM 200: The Growing Business: Breaking Even</div>
+      <div class="course-info">Winter 2023</div>
+    </div>
+    <div class="course-item" data-category="business">
+      <div class="course-title">BSM 100: New Business: Idea to Reality</div>
+      <div class="course-info">Fall 2022</div>
+    </div>
+
+    <!-- Communication -->
+    <div class="course-item" data-category="comm">
+      <div class="course-title">CMN 288: Communication and Social Media</div>
+      <div class="course-info">Winter 2025</div>
+    </div>
+    <div class="course-item" data-category="comm">
+      <div class="course-title">CMN 300: Communication in the Computer Industry</div>
+      <div class="course-info">Fall 2022</div>
+    </div>
+
+    <!-- Others -->
+
+    <div class="course-item" data-category="others">
+      <div class="course-title">SCI 200: Professionalism in Science</div>
+      <div class="course-info">Fall 2024</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CFRE 101: Introductory French I</div>
+      <div class="course-info">Spring/Summer 2022</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CGEO 793: The Geography of Toronto</div>
+      <div class="course-info">Spring/Summer 2024</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CPCS 181: Introduction to Astronomy</div>
+      <div class="course-info">Spring/Summer 2023</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CPCS 581: Advanced Topics in Astronomy</div>
+      <div class="course-info">Spring/Summer 2024</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CGEO 110: The Physical Environment</div>
+      <div class="course-info">Spring/Summer 2023</div>
+    </div>
+    <div class="course-item" data-category="others">
+      <div class="course-title">CGEO 702: Tech and Contemporary Environment</div>
+      <div class="course-info">Fall 2023</div>
+    </div>
+  
+  
+  </div>
+</main>
 
   <footer>
     <a href="index.html">Back to Portfolio</a>
+    <div class="footer-line"></div>
   </footer>
 
+  <script>
+
+
+
+
+
+    // Typing Effect
+    const phrases = ["Here’s My Byte-Busting Course Breakdown"];
+    const typingText = document.getElementById("typing-text");
+    let i = 0;
+
+    function typeWriter() {
+      const currentPhrase = phrases[0];
+      if (i < currentPhrase.length) {
+        typingText.textContent += currentPhrase.charAt(i);
+        i++;
+        setTimeout(typeWriter, 100);
+      } else {
+        setTimeout(() => {
+          typingText.style.borderRight = "none";
+        }, 1000);
+      }
+    }
+
+    window.onload = () => {
+      typeWriter();
+    };
+
+
+
+    
+
+    // Filter Functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const courseItems = document.querySelectorAll('.course-item');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        courseItems.forEach(item => {
+          if (filter === 'all' || item.dataset.category === filter) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Intersection Observer for Animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    courseItems.forEach(item => observer.observe(item));
+  </script>
 </body>
 </html>
